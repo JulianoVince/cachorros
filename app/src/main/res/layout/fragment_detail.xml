@@ -18,7 +18,7 @@
             android:src="@mipmap/ic_app_icon" />
 
         <TextView
-            android:id="@+id/DogName"
+            android:id="@+id/dogName"
             style="@style/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             style="@style/Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/DogName"
+            android:layout_below="@+id/dogName"
             android:layout_centerHorizontal="true"
             android:layout_margin="4dp"
             android:text="Dog purpose" />
