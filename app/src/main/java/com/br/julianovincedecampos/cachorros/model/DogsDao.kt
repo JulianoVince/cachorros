@@ -9,7 +9,7 @@ import androidx.room.Query
 interface DogsDao {
 
     @Insert
-    suspend fun insertAll(vararg dogs: DogBreed): List<Log>
+    suspend fun insertAll(vararg dogs: DogBreed): List<Long>
 
     @Query("SELECT * FROM dogbreed")
     suspend fun getAllDogs(): List<DogBreed>
