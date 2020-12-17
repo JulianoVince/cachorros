@@ -7,11 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import com.br.julianovincedecampos.cachorros.R
 import com.br.julianovincedecampos.cachorros.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.fragment_detail.*
-import kotlinx.android.synthetic.main.fragment_list.*
 
 class DetailFragment : Fragment() {
     private lateinit var viewModel:DetailViewModel
@@ -42,7 +40,7 @@ class DetailFragment : Fragment() {
         viewModel.dogLiveData.observe(this, Observer { dog ->
             dog?.let {
                 dogName.text = dog.dogBreed
-                dogPurpose.text = dog.breadFor
+                dogPurpose.text = dog.bredFor
                 dogTemperament.text = dog.temperament
                 dogLifespan.text = dog.lifeSpan
             }
