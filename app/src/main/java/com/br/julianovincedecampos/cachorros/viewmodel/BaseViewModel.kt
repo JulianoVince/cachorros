@@ -1,4 +1,4 @@
-package com.br.julianovincedecampos.cachorros.model
+package com.br.julianovincedecampos.cachorros.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

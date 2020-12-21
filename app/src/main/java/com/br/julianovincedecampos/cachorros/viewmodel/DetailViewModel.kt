@@ -1,17 +1,18 @@
 package com.br.julianovincedecampos.cachorros.viewmodel
 
-import android.graphics.ColorSpace
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.br.julianovincedecampos.cachorros.model.DogBreed
+import com.br.julianovincedecampos.cachorros.model.DogDatabase
+import kotlinx.coroutines.launch
 
-class DetailViewModel : ViewModel() {
+class DetailViewModel(application: Application) : BaseViewModel(application) {
     val dogLiveData = MutableLiveData<DogBreed>()
 
-    fun fetch(){
-        val dog =
-            DogBreed("Teste", "Teste 2", "Teste 3", "Teste 4", "Teste 4", "Teste 6", "Trsetr 7")
-
-        dogLiveData.value = dog
+    fun fetch(uuid: Int){
+        launch {
+            val dog = DogDatabase(getApplication()).dogDao().getDog(uuid)
+            dogLiveData.value = dog
+        }
     }
 }

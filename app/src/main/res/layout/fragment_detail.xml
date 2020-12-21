@@ -9,7 +9,7 @@
         tools:context=".view.DetailFragment">
 
         <ImageView
-            android:id="@+id/doImage"
+            android:id="@+id/dogImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -22,7 +22,7 @@
             style="@style/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/doImage"
+            android:layout_below="@+id/dogImage"
             android:layout_centerHorizontal="true"
             android:layout_margin="4dp"
             android:text="Dog name" />

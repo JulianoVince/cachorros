@@ -5,9 +5,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "dogbreed")
+@Entity
 data class DogBreed(
-
     @ColumnInfo(name = "breed_id")
     @SerializedName("id")
     val breedId: String?,
@@ -22,19 +21,18 @@ data class DogBreed(
 
     @ColumnInfo(name = "breed_group")
     @SerializedName("breed_group")
-    val breedGroup: String,
+    val breedGroup: String?,
 
     @ColumnInfo(name = "bred_for")
     @SerializedName("bred_for")
-    val bredFor: String,
+    val bredFor: String?,
 
     @SerializedName("temperament")
-    val temperament: String,
+    val temperament: String?,
 
     @ColumnInfo(name = "dog_url")
     @SerializedName("url")
-    val imageUrl: String
-
+    val imageUrl: String?
 ) {
     @PrimaryKey(autoGenerate = true)
     var uuid: Int = 0

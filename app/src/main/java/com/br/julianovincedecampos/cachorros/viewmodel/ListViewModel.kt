@@ -3,8 +3,6 @@ package com.br.julianovincedecampos.cachorros.viewmodel
 import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.br.julianovincedecampos.cachorros.model.BaseViewModel
 import com.br.julianovincedecampos.cachorros.model.DogBreed
 import com.br.julianovincedecampos.cachorros.model.DogDatabase
 import com.br.julianovincedecampos.cachorros.model.DogsAPIService
@@ -18,7 +16,7 @@ import kotlinx.coroutines.launch
 class ListViewModel(application: Application) : BaseViewModel(application) {
 
     private var prefHelper = SharedPreferencesHelper(getApplication())
-    private var refreshTime = 5 * 60 * 1000 * 1000 * 1000L// 5 minutos para buscar endpoint
+    private var refreshTime = 5 * 1000 * 1000 * 1000L// 5 minutos para buscar endpoint
 
     private val dogsServices = DogsAPIService()
     private val disposable = CompositeDisposable()
@@ -30,17 +28,17 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
     fun refresh() {
         val updateTime = prefHelper.getUpateTime()
         if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
-                fetchFromDatabase()
+            fetchFromDatabase()
         } else {
             fetchFromRemote()
         }
     }
 
-    fun refreshBypassCache(){
+    fun refreshBypassCache() {
         fetchFromRemote()
     }
 
-    private fun fetchFromDatabase(){
+    private fun fetchFromDatabase() {
         loading.value = true
         launch {
             val dogs = DogDatabase(getApplication()).dogDao().getAllDogs()
@@ -58,7 +56,11 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
                 .subscribeWith(object : DisposableSingleObserver<List<DogBreed>>() {
                     override fun onSuccess(backendDogs: List<DogBreed>) {
                         storeDogsLocally(backendDogs)
-                        Toast.makeText(getApplication(), "Dados obtidos endpoint", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            getApplication(),
+                            "Dados obtidos endpoint",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 
                     override fun onError(e: Throwable) {
@@ -85,11 +87,10 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
             var i = 0
             while (i < list.size) {
                 list[i].uuid = result[i].toInt()
-                i++
+                ++i
             }
             dogsRetrived(list)
         }
-
         prefHelper.saveUpdateTime(System.nanoTime())
     }
 

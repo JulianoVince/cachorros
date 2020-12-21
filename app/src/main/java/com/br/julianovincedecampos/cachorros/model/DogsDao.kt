@@ -1,8 +1,8 @@
 package com.br.julianovincedecampos.cachorros.model
 
-import android.util.Log
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
@@ -13,6 +13,9 @@ interface DogsDao {
 
     @Query("SELECT * FROM dogbreed")
     suspend fun getAllDogs(): List<DogBreed>
+
+    @Query("SELECT * FROM dogbreed WHERE uuid = :dogId")
+    suspend fun getDog(dogId: Int): DogBreed
 
     @Query("DELETE FROM dogbreed")
     suspend fun deleteAllDogs()
