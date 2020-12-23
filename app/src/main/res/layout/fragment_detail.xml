@@ -5,10 +5,14 @@
         <variable
             name="dog"
             type="com.br.julianovincedecampos.cachorros.model.DogBreed" />
+        <variable
+            name="pallette"
+            type="com.br.julianovincedecampos.cachorros.model.DogPallete" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@{pallette.color}"
         tools:context=".view.DetailFragment">
 
         <ImageView

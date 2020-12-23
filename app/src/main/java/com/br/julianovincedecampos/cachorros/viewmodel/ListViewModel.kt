@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 class ListViewModel(application: Application) : BaseViewModel(application) {
 
     private var prefHelper = SharedPreferencesHelper(getApplication())
-    private var refreshTime = 5 * 1000 * 1000 * 1000L// 5 minutos para buscar endpoint
+    private var refreshTime = 5 * 60 * 1000 * 1000 * 1000L// 5 minutos para buscar endpoint
 
     private val dogsServices = DogsAPIService()
     private val disposable = CompositeDisposable()

@@ -46,6 +46,7 @@ class DogsListAdapter(val dogsList: ArrayList<DogBreed>) :
     override fun onDogClicked(v: View) {
         val uuid = v.dogId.text.toString().toInt()
         val action = ListFragmentDirections.actionDetailFragment()
+        action.dogUuid = uuid
         Navigation.findNavController(v).navigate(action)
     }
 }
