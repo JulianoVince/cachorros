@@ -1,11 +1,13 @@
 package com.br.julianovincedecampos.cachorros.viewmodel
 
 import android.app.Application
+import android.app.NotificationManager
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.br.julianovincedecampos.cachorros.model.DogBreed
 import com.br.julianovincedecampos.cachorros.model.DogDatabase
 import com.br.julianovincedecampos.cachorros.model.DogsAPIService
+import com.br.julianovincedecampos.cachorros.util.NotificarionsHelper
 import com.br.julianovincedecampos.cachorros.util.SharedPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -61,6 +63,7 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
                             "Dados obtidos endpoint",
                             Toast.LENGTH_SHORT
                         ).show()
+                        NotificarionsHelper(getApplication()).createNotification()
                     }
 
                     override fun onError(e: Throwable) {

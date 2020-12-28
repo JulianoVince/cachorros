@@ -30,7 +30,11 @@ class NotificarionsHelper(val context: Context) {
             .setLargeIcon(icon)
             .setContentTitle("Dogs Notification")
             .setContentText("This notification has some content")
-            .setStyle(NotificationCompat.BigPictureStyle().bigPicture(icon).bigLargeIcon(null))
+            .setStyle(
+                NotificationCompat
+                    .BigPictureStyle()
+                    .bigPicture(icon)
+                    .bigLargeIcon(null))
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
