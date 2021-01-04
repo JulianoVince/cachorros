@@ -4,10 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.transition.Transition
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -21,7 +19,7 @@ import com.bumptech.glide.request.target.CustomTarget
 
 class DetailFragment : Fragment() {
 
-    private lateinit var viewModel:DetailViewModel
+    private lateinit var viewModel: DetailViewModel
     private var dogUuid = 0
     private lateinit var dataBinding: FragmentDetailBinding
 
@@ -29,6 +27,7 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
         return dataBinding.root
     }
@@ -46,7 +45,7 @@ class DetailFragment : Fragment() {
         oberververViewModel()
     }
 
-    private fun oberververViewModel(){
+    private fun oberververViewModel() {
         viewModel.dogLiveData.observe(this, Observer { dog ->
             dog?.let {
                 dataBinding.dog = dog
@@ -58,14 +57,17 @@ class DetailFragment : Fragment() {
         })
     }
 
-    private fun setupBackgroundColor(url:String){
+    private fun setupBackgroundColor(url: String) {
         Glide.with(this)
             .asBitmap()
             .load(url)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onLoadCleared(placeholder: Drawable?) {
                 }
-                override fun onResourceReady(resource: Bitmap,transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
+
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
                 ) {
                     Palette.from(resource)
                         .generate { palette ->
@@ -77,4 +79,22 @@ class DetailFragment : Fragment() {
 
             })
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.detail_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_send_sms -> {
+
+            }
+            R.id.action_shared -> {
+
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 }
