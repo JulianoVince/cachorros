@@ -1,9 +1,12 @@
 package com.br.julianovincedecampos.cachorros.view
 
+import android.app.AlertDialog
+import android.app.PendingIntent
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.transition.Transition
+import android.telephony.SmsManager
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
@@ -12,7 +15,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.palette.graphics.Palette
 import com.br.julianovincedecampos.cachorros.R
 import com.br.julianovincedecampos.cachorros.databinding.FragmentDetailBinding
+import com.br.julianovincedecampos.cachorros.databinding.SendSmsDialogBinding
+import com.br.julianovincedecampos.cachorros.model.DogBreed
 import com.br.julianovincedecampos.cachorros.model.DogPallete
+import com.br.julianovincedecampos.cachorros.model.SmsInfo
 import com.br.julianovincedecampos.cachorros.viewmodel.DetailViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -22,6 +28,8 @@ class DetailFragment : Fragment() {
     private lateinit var viewModel: DetailViewModel
     private var dogUuid = 0
     private lateinit var dataBinding: FragmentDetailBinding
+    private var sendSmsStarted = false
+    private var currentDog: DogBreed? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +55,7 @@ class DetailFragment : Fragment() {
 
     private fun oberververViewModel() {
         viewModel.dogLiveData.observe(this, Observer { dog ->
+            currentDog = dog
             dog?.let {
                 dataBinding.dog = dog
 
@@ -88,13 +97,62 @@ class DetailFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_send_sms -> {
-
+                sendSmsStarted = true
+                (activity as MainActivity).checkSmsPermission()
             }
             R.id.action_shared -> {
-
+                val intent = Intent(Intent.ACTION_SEND)
+                intent.type = "text/plain"
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Check out this dog breed")
+                intent.putExtra(
+                    Intent.EXTRA_TEXT,
+                    "${currentDog?.dogBreed} bred for ${currentDog?.bredFor}"
+                )
+                intent.putExtra(Intent.EXTRA_STREAM, currentDog?.imageUrl)
+                startActivity(Intent.createChooser(intent, "Shared with"))
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
+    fun onPermissionResult(permissionGranted: Boolean) {
+        if (sendSmsStarted && permissionGranted) {
+            context?.let {
+                val smsInfo = SmsInfo(
+                    "",
+                    "${currentDog?.dogBreed} bred for ${currentDog?.bredFor}",
+                    currentDog?.imageUrl
+                )
+
+                val dialogBinding = DataBindingUtil.inflate<SendSmsDialogBinding>(
+                    LayoutInflater.from(it),
+                    R.layout.send_sms_dialog,
+                    null,
+                    false
+                )
+
+                AlertDialog.Builder(it)
+                    .setView(dialogBinding.root)
+                    .setPositiveButton("Send SMS") { dialog, which ->
+                        with(!dialogBinding.smsDestination.text.isNullOrEmpty()) {
+                            smsInfo.to = dialogBinding.smsDestination.text.toString()
+                            sendSms(smsInfo)
+                        }
+                    }
+                    .setNegativeButton("Cancel") { dialog, which -> }
+                    .show()
+
+                dialogBinding.smsInfo = smsInfo
+            }
+
+
+        }
+    }
+
+    private fun sendSms(smsInfo: SmsInfo) {
+        val intent = Intent(context, MainActivity::class.java)
+        val pi = PendingIntent.getActivity(context, 0, intent, 0)
+        val sms = SmsManager.getDefault()
+        sms.sendTextMessage(smsInfo.to, null, smsInfo.text, pi, null)
+    }
 }
